@@ -29,8 +29,8 @@ namespace ProductsAPI.Controllers
             }.ConnectionString;
             return connectionString;
             */
-            string connctionStr = @"Server=4db8c604-d7f7-4f44-a85e-a81900fa0271.sqlserver.sequelizer.com;Database=db4db8c604d7f74f44a85ea81900fa0271;User ID=ycuybrshuiebsfdm;Password=jYHo42aBzidnUTZ5asAMSrnppLYaYWiPvSyanaMeftE3KDEdAnczTCTZLs8qb8KL";
-            return ConnectionStr;
+            string connectionStr = @"Server=4db8c604-d7f7-4f44-a85e-a81900fa0271.sqlserver.sequelizer.com;Database=db4db8c604d7f74f44a85ea81900fa0271;User ID=ycuybrshuiebsfdm;Password=jYHo42aBzidnUTZ5asAMSrnppLYaYWiPvSyanaMeftE3KDEdAnczTCTZLs8qb8KL";
+            return connectionStr;
         }
 
         
