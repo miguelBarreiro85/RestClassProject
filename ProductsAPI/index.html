@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>RESTful web service - Products App</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div>
+        <h2>All Products</h2>
+        <ul id="products" />
+    </div>
+    <div>
+        <h2>Search by Id</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();"/>
+        <p id="product" />
+    </div>
+    <div>
+        <select id="category">
+            <option onclick="findByCat();" value="Groceries">Groceries</option>
+            <option onclick="findByCat();" value="Toys">Toys</option>
+            <option onclick="findByCat();" value="Hardware">Hardware</option>
+        </select>
+    </div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js"></script>
+    <script>
+        var uri = 'http://localhost:1974/api/products'; //TODO: MUST BE UPDATED
+        $(document).ready(function () {
+            $.get(uri)
+                .done(function (data) {
+                    //alert(data);
+                    //ON SUCESS, 'data' contains a list of products
+                    $.each(data, function (key, item) {
+                        //ADD a list item for the product
+                        $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                    });
+                })
+                .fail(function (jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    alert("Request failed: " + err);
+                });
+        });
+        function formatItem(item) {
+            return item.Name + ": " + item.Price + "€";
+        }
+        function find() {
+            var id = $('#prodId').val();
+            $.getJSON(uri + '/' + id)
+                .done(function (data) {
+                    $('#product').text(formatItem(data));
+                })
+                .fail(function (jqxhr, textStatus, error) {
+                    var err = textStatus2 + ", " + error;
+                    alert("request failed! : ", err);
+                });
+        } //find()
+        function findByCat() {
+            var cat = $('#category').val();
+            $.get(uri + '/' + cat)
+                .done(function (data) {
+                    $.each(data, function (key, item) {
+                        //ADD a list item for the product
+                        $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                    });
+                })
+                .fail(function (jqxhr, textStatus, error) {
+                    var err = textStatus2 + ", " + error;
+                    alert("request failed! : ", err);
+                });
+        }
+    </script>
+    </body>
+    </html>
