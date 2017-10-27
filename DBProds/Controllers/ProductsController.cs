@@ -7,13 +7,30 @@ using System.Net.Http;
 using System.Web.Http;
 using DBProds.Models;
 using System.Data;
+using System.Configuration;
 
 namespace ProductsAPI.Controllers
 {
     public class ProductsController : ApiController
     {
         //Probably a database in a real scenario...
-        string connectionSTR = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\migue\Dropbox\IS\RestClassProj\RestClassProject\DBProds\App_Data\Database1.mdf;Integrated Security = True";
+        public String getConnectionString()
+        {
+            var uriString = ConfigurationManager.AppSettings["4db8c604-d7f7-4f44-a85e-a81900fa0271.sqlserver.sequelizer.com"];
+            var uri = new Uri(uriString);
+            var connectionString = new SqlConnectionStringBuilder
+            {
+                DataSource = uri.Host,
+                InitialCatalog = uri.AbsolutePath.Trim('/'),
+                //UserID = uri.UserInfo.Split(':').First(),
+                UserID = "ycuybrshuiebsfdm",
+                //Password = uri.UserInfo.Split(':').Last(),
+                Password = "jYHo42aBzidnUTZ5asAMSrnppLYaYWiPvSyanaMeftE3KDEdAnczTCTZLs8qb8KL",
+            }.ConnectionString;
+            return connectionString;
+        }
+
+        
 
         List<Product> products = new List<Product>
         {
@@ -21,10 +38,14 @@ namespace ProductsAPI.Controllers
             new Product { Id = 2, Name = "Yo-yo", Category = "Toys", Price = 3.75M },
             new Product { Id = 3, Name = "Hammer", Category = "Hardware", Price = 16.99M }
         };
+
+       // public string ConnectionString { get => connectionString; set => connectionString = value; }
+        //public Uri Uri { get => uri; set => uri = value; }
+
         public IEnumerable<Product> GetAllProducts()
         {
             List<Product> allProducts = new List<Product>();
-            SqlConnection connection = new SqlConnection(connectionSTR);
+            SqlConnection connection = new SqlConnection(getConnectionString());
             connection.Open();
             SqlCommand command = new SqlCommand("SELECT * FROM Prods ORDER BY Id", connection);
             SqlDataReader reader = command.ExecuteReader();
@@ -45,7 +66,7 @@ namespace ProductsAPI.Controllers
         [Route("api/products/{id:int}")] //specifies that the id parameter is an integer
         public IHttpActionResult GetProduct(int id)
          {
-            SqlConnection connec = new SqlConnection(connectionSTR);
+            SqlConnection connec = new SqlConnection(getConnectionString());
             connec.Open();
             SqlCommand command = new SqlCommand("SELECT * FROM Prods WHERE Id ="+id,connec);
             SqlDataReader reader = command.ExecuteReader();
@@ -88,7 +109,7 @@ namespace ProductsAPI.Controllers
         public IHttpActionResult PostProduct(Product p)
         {
             
-            SqlConnection connec = new SqlConnection(connectionSTR);
+            SqlConnection connec = new SqlConnection(getConnectionString());
             connec.Open();
             SqlCommand command = new SqlCommand("INSERT INTO Prods (NAME,CATEGORY,PRICE) VALUES (@Name,@Category,@Price)", connec);
             command.CommandType = System.Data.CommandType.Text;
@@ -103,7 +124,7 @@ namespace ProductsAPI.Controllers
         // PUT api/<controller>/5
         public IHttpActionResult PutProduct(Product p)
         {
-            SqlConnection connec = new SqlConnection(connectionSTR);
+            SqlConnection connec = new SqlConnection(getConnectionString());
             connec.Open();
             SqlCommand command = new SqlCommand("UPDATE Prods SET NAME=@Name,CATEGORY=@Category,Price=@Price WHERE Id=@Id", connec);
             command.CommandType = System.Data.CommandType.Text;
@@ -120,7 +141,7 @@ namespace ProductsAPI.Controllers
         [Route("api/Products/{id:int}")]
         public IHttpActionResult DeleteProduct(int id)
         {
-            SqlConnection connec = new SqlConnection(connectionSTR);
+            SqlConnection connec = new SqlConnection(getConnectionString());
             connec.Open();
             SqlCommand cmd= new SqlCommand("DELETE FROM Prods WHERE Id=@Id",connec);
             cmd.CommandType = System.Data.CommandType.Text;
