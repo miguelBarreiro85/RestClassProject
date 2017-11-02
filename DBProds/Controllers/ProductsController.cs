@@ -13,8 +13,10 @@ namespace ProductsAPI.Controllers
     public class ProductsController : ApiController
     {
         //Probably a database in a real scenario...
-        string connectionSTR = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\migue\Dropbox\IS\RestClassProj\RestClassProject\DBProds\App_Data\Database1.mdf;Integrated Security = True";
+        //string connectionSTR = @"Server=4db8c604-d7f7-4f44-a85e-a81900fa0271.sqlserver.sequelizer.com;Database=db4db8c604d7f74f44a85ea81900fa0271;User ID=ycuybrshuiebsfdm;Password=jYHo42aBzidnUTZ5asAMSrnppLYaYWiPvSyanaMeftE3KDEdAnczTCTZLs8qb8KL";
+        //string connectionSTR = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\migue\Dropbox\IS\RestClassProjMSSQL\RestClassProject\DBProds\App_Data\Database1.mdf;Integrated Security=True";
 
+        string connectionSTR = System.Configuration.ConfigurationManager.ConnectionStrings["connectDBprods"].ConnectionString;
         List<Product> products = new List<Product>
         {
             new Product { Id = 1, Name = "Tomato Soup", Category = "Groceries", Price = 1 },
