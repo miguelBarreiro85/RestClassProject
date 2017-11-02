@@ -23,6 +23,7 @@ namespace ProductsAPI.Controllers
             new Product { Id = 2, Name = "Yo-yo", Category = "Toys", Price = 3.75M },
             new Product { Id = 3, Name = "Hammer", Category = "Hardware", Price = 16.99M }
         };
+        [Route("api/products")]
         public IEnumerable<Product> GetAllProducts()
         {
             List<Product> allProducts = new List<Product>();
@@ -39,8 +40,8 @@ namespace ProductsAPI.Controllers
                 product.Price = (reader["Price"] == DBNull.Value) ? 0 : Convert.ToDecimal(reader["Price"]);
                 allProducts.Add(product);
             }
-            connection.Close();
             reader.Close();
+            connection.Close();
             return allProducts;
         }
 
