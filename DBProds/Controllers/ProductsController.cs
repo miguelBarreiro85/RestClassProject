@@ -88,6 +88,7 @@ namespace ProductsAPI.Controllers
             }
         }
         // POST api/<controller> //our controller is products
+        [Route("api/products")]
         public IHttpActionResult PostProduct(Product p)
         {
             
